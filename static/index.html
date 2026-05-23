@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown → Word 转换器</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="app">
+  <main class="preview-pane" id="previewPane">
+    <div class="preview-empty" id="previewEmpty">
+      <div class="drop-hint">
+        <div class="drop-icon">&#128196;</div>
+        <p>拖拽 .md 文件到这里</p>
+        <p class="sub-hint">或点击右侧选择文件</p>
+      </div>
+    </div>
+    <div class="preview-content markdown-body" id="previewContent" style="display:none"></div>
+  </main>
+
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <h2>文件</h2>
+      <div class="file-drop-zone" id="fileDropZone">
+        <p id="fileNameDisplay">拖拽 .md 文件到此处</p>
+      </div>
+      <input type="file" id="fileInput" accept=".md,.markdown" hidden>
+      <button class="btn btn-secondary" onclick="document.getElementById('fileInput').click()">选择文件</button>
+    </div>
+
+    <div class="sidebar-section">
+      <h2>标题样式</h2>
+      <div class="style-control" id="styleControls">
+        <div class="control-group">
+          <label>H1 字号: <span id="h1SizeVal">24</span>pt</label>
+          <input type="range" id="h1Size" min="16" max="48" value="24">
+        </div>
+        <div class="control-group">
+          <label>H2 字号: <span id="h2SizeVal">18</span>pt</label>
+          <input type="range" id="h2Size" min="14" max="36" value="18">
+        </div>
+        <div class="control-group">
+          <label>H3 字号: <span id="h3SizeVal">14</span>pt</label>
+          <input type="range" id="h3Size" min="12" max="24" value="14">
+        </div>
+        <div class="control-group">
+          <label>H1 字体</label>
+          <select id="h1Font">
+            <option value="Arial" selected>Arial</option>
+            <option value="Microsoft YaHei">微软雅黑</option>
+            <option value="SimSun">宋体</option>
+            <option value="SimHei">黑体</option>
+            <option value="KaiTi">楷体</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Georgia">Georgia</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>H2 字体</label>
+          <select id="h2Font">
+            <option value="Arial" selected>Arial</option>
+            <option value="Microsoft YaHei">微软雅黑</option>
+            <option value="SimSun">宋体</option>
+            <option value="SimHei">黑体</option>
+            <option value="KaiTi">楷体</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Georgia">Georgia</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>H3 字体</label>
+          <select id="h3Font">
+            <option value="Arial" selected>Arial</option>
+            <option value="Microsoft YaHei">微软雅黑</option>
+            <option value="SimSun">宋体</option>
+            <option value="SimHei">黑体</option>
+            <option value="KaiTi">楷体</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Georgia">Georgia</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <button class="btn btn-primary" id="exportBtn" disabled>导出 Word</button>
+      <div class="status-message" id="statusMsg"></div>
+    </div>
+  </aside>
+</div>
+
+<script src="/markdown-it.min.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

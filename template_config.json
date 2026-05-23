@@ -1,0 +1,26 @@
+{
+  "document": {
+    "default_font": "Times New Roman",
+    "default_size": 12,
+    "page_margins": { "top": 2.54, "bottom": 2.54, "left": 3.18, "right": 3.18 }
+  },
+  "styles": {
+    "heading_1": { "font_name": "Arial", "font_size": 24, "bold": true, "alignment": "center", "color": "#1a1a1a" },
+    "heading_2": { "font_name": "Arial", "font_size": 18, "bold": true, "color": "#2d2d2d" },
+    "heading_3": { "font_name": "Arial", "font_size": 14, "bold": true, "color": "#3d3d3d" },
+    "heading_4": { "font_name": "Arial", "font_size": 12, "bold": true },
+    "heading_5": { "font_name": "Arial", "font_size": 11, "bold": true },
+    "heading_6": { "font_name": "Arial", "font_size": 10, "bold": true },
+    "paragraph": { "font_name": "Times New Roman", "font_size": 12 },
+    "bold": { "bold": true },
+    "italic": { "italic": true },
+    "inline_code": { "font_name": "Courier New", "font_size": 10.5, "bg_color": "#F0F0F0" },
+    "code_block": { "font_name": "Courier New", "font_size": 10, "bg_color": "#F0F0F0", "border_color": "#CCCCCC", "border_width_pt": 1 },
+    "link": { "color": "#0000EE", "underline": true },
+    "table_header": { "font_name": "Arial", "font_size": 10, "bold": true },
+    "table_cell": { "font_name": "Arial", "font_size": 10 },
+    "list_bullet": { "indent_cm": 1.27 },
+    "list_number": { "indent_cm": 1.27 },
+    "image": { "alignment": "center" }
+  }
+}
