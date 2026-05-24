@@ -30,7 +30,43 @@
     </div>
 
     <div class="sidebar-section">
-      <h2>标题样式</h2>
+      <h2>预设模板</h2>
+      <div class="preset-list" id="presetList">
+        <div class="preset-card active" data-preset="default">
+          <span class="preset-dot" style="background:#c84b31"></span>
+          <div class="preset-info">
+            <div class="preset-name">默认</div>
+            <div class="preset-desc">微软雅黑 + 宋体 · 通用文档</div>
+          </div>
+        </div>
+        <div class="preset-card" data-preset="academic">
+          <span class="preset-dot" style="background:#2c5f8a"></span>
+          <div class="preset-info">
+            <div class="preset-name">学术论文</div>
+            <div class="preset-desc">黑体 + 宋体 · 论文报告</div>
+          </div>
+        </div>
+        <div class="preset-card" data-preset="business">
+          <span class="preset-dot" style="background:#5c8a45"></span>
+          <div class="preset-info">
+            <div class="preset-name">商务文档</div>
+            <div class="preset-desc">微软雅黑 · 工作汇报</div>
+          </div>
+        </div>
+        <div class="preset-card" data-preset="notes">
+          <span class="preset-dot" style="background:#8a6d3b"></span>
+          <div class="preset-info">
+            <div class="preset-name">个人笔记</div>
+            <div class="preset-desc">楷体 + 宋体 · 日记随笔</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <h2>微调标题</h2>
       <div class="style-control" id="styleControls">
         <div class="control-group">
           <label>H1 字号: <span id="h1SizeVal">24</span>pt</label>
@@ -49,8 +85,8 @@
           <select id="h1Font">
             <option value="Arial" selected>Arial</option>
             <option value="Microsoft YaHei">微软雅黑</option>
-            <option value="SimSun">宋体</option>
             <option value="SimHei">黑体</option>
+            <option value="SimSun">宋体</option>
             <option value="KaiTi">楷体</option>
             <option value="Times New Roman">Times New Roman</option>
             <option value="Helvetica">Helvetica</option>
@@ -62,8 +98,8 @@
           <select id="h2Font">
             <option value="Arial" selected>Arial</option>
             <option value="Microsoft YaHei">微软雅黑</option>
-            <option value="SimSun">宋体</option>
             <option value="SimHei">黑体</option>
+            <option value="SimSun">宋体</option>
             <option value="KaiTi">楷体</option>
             <option value="Times New Roman">Times New Roman</option>
             <option value="Helvetica">Helvetica</option>
@@ -75,8 +111,8 @@
           <select id="h3Font">
             <option value="Arial" selected>Arial</option>
             <option value="Microsoft YaHei">微软雅黑</option>
-            <option value="SimSun">宋体</option>
             <option value="SimHei">黑体</option>
+            <option value="SimSun">宋体</option>
             <option value="KaiTi">楷体</option>
             <option value="Times New Roman">Times New Roman</option>
             <option value="Helvetica">Helvetica</option>

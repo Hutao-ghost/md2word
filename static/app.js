@@ -7,15 +7,60 @@
     linkify: true,
   }).enable(["table", "strikethrough"]);
 
+  var PRESETS = {
+    "default": {
+      name: "默认",
+      heading_1: { font_name: "Microsoft YaHei", font_size: 24 },
+      heading_2: { font_name: "Microsoft YaHei", font_size: 18 },
+      heading_3: { font_name: "Microsoft YaHei", font_size: 14 },
+      heading_4_6_font: "Arial",
+      paragraph_font: "Times New Roman",
+      paragraph_size: 12,
+      code_font: "Courier New",
+    },
+    "academic": {
+      name: "学术论文",
+      heading_1: { font_name: "SimHei", font_size: 22 },
+      heading_2: { font_name: "SimHei", font_size: 16 },
+      heading_3: { font_name: "SimHei", font_size: 14 },
+      heading_4_6_font: "SimHei",
+      paragraph_font: "Times New Roman",
+      paragraph_size: 12,
+      code_font: "Consolas",
+    },
+    "business": {
+      name: "商务文档",
+      heading_1: { font_name: "Microsoft YaHei", font_size: 26 },
+      heading_2: { font_name: "Microsoft YaHei", font_size: 20 },
+      heading_3: { font_name: "Microsoft YaHei", font_size: 16 },
+      heading_4_6_font: "Microsoft YaHei",
+      paragraph_font: "Microsoft YaHei",
+      paragraph_size: 11,
+      code_font: "Courier New",
+    },
+    "notes": {
+      name: "个人笔记",
+      heading_1: { font_name: "KaiTi", font_size: 24 },
+      heading_2: { font_name: "KaiTi", font_size: 18 },
+      heading_3: { font_name: "KaiTi", font_size: 14 },
+      heading_4_6_font: "KaiTi",
+      paragraph_font: "Times New Roman",
+      paragraph_size: 11,
+      code_font: "Courier New",
+    },
+  };
+
+  var currentPreset = "default";
+
   var state = {
     markdown: "",
     filePath: "",
     fileName: "",
     template: {
       styles: {
-        heading_1: { font_name: "Arial", font_size: 24 },
-        heading_2: { font_name: "Arial", font_size: 18 },
-        heading_3: { font_name: "Arial", font_size: 14 },
+        heading_1: { font_name: "Microsoft YaHei", font_size: 24 },
+        heading_2: { font_name: "Microsoft YaHei", font_size: 18 },
+        heading_3: { font_name: "Microsoft YaHei", font_size: 14 },
       },
     },
     exporting: false,
@@ -41,6 +86,53 @@
   var h1SizeVal = document.getElementById("h1SizeVal");
   var h2SizeVal = document.getElementById("h2SizeVal");
   var h3SizeVal = document.getElementById("h3SizeVal");
+  var presetList = document.getElementById("presetList");
+
+  function syncControlsFromState() {
+    var s = state.template.styles;
+    h1SizeEl.value = s.heading_1.font_size;
+    h2SizeEl.value = s.heading_2.font_size;
+    h3SizeEl.value = s.heading_3.font_size;
+    h1SizeVal.textContent = s.heading_1.font_size;
+    h2SizeVal.textContent = s.heading_2.font_size;
+    h3SizeVal.textContent = s.heading_3.font_size;
+    h1FontEl.value = s.heading_1.font_name;
+    h2FontEl.value = s.heading_2.font_name;
+    h3FontEl.value = s.heading_3.font_name;
+  }
+
+  function applyPreset(name) {
+    var preset = PRESETS[name];
+    if (!preset) return;
+
+    currentPreset = name;
+    state.template.styles.heading_1.font_name = preset.heading_1.font_name;
+    state.template.styles.heading_1.font_size = preset.heading_1.font_size;
+    state.template.styles.heading_2.font_name = preset.heading_2.font_name;
+    state.template.styles.heading_2.font_size = preset.heading_2.font_size;
+    state.template.styles.heading_3.font_name = preset.heading_3.font_name;
+    state.template.styles.heading_3.font_size = preset.heading_3.font_size;
+
+    syncControlsFromState();
+
+    var cards = presetList.querySelectorAll(".preset-card");
+    cards.forEach(function (card) {
+      card.classList.toggle("active", card.dataset.preset === name);
+    });
+
+    if (state.markdown) {
+      applyTemplateStyles();
+    }
+  }
+
+  presetList.addEventListener("click", function (e) {
+    var card = e.target.closest(".preset-card");
+    if (!card) return;
+    var name = card.dataset.preset;
+    if (name && name !== currentPreset) {
+      applyPreset(name);
+    }
+  });
 
   function handleFile(file) {
     if (!file.name.endsWith(".md") && !file.name.endsWith(".markdown")) {
@@ -78,6 +170,7 @@
 
   function applyTemplateStyles() {
     var s = state.template.styles;
+    var preset = PRESETS[currentPreset] || PRESETS["default"];
     var styleEl = document.getElementById("dynamic-styles");
     if (!styleEl) {
       styleEl = document.createElement("style");
@@ -88,23 +181,28 @@
     var h1FontFamily = mapFontFamily(s.heading_1.font_name);
     var h2FontFamily = mapFontFamily(s.heading_2.font_name);
     var h3FontFamily = mapFontFamily(s.heading_3.font_name);
+    var h4FontFamily = mapFontFamily(preset.heading_4_6_font);
+    var bodyFontFamily = mapFontFamily(preset.paragraph_font);
 
     styleEl.textContent =
+      ".markdown-body { font-family: " + bodyFontFamily + "; font-size: " + preset.paragraph_size + "pt; }" +
       ".markdown-body h1 { font-family: " + h1FontFamily + "; font-size: " + s.heading_1.font_size + "pt; }" +
       ".markdown-body h2 { font-family: " + h2FontFamily + "; font-size: " + s.heading_2.font_size + "pt; }" +
-      ".markdown-body h3 { font-family: " + h3FontFamily + "; font-size: " + s.heading_3.font_size + "pt; }";
+      ".markdown-body h3 { font-family: " + h3FontFamily + "; font-size: " + s.heading_3.font_size + "pt; }" +
+      ".markdown-body h4, .markdown-body h5, .markdown-body h6 { font-family: " + h4FontFamily + "; }";
   }
 
   function mapFontFamily(fontName) {
     var map = {
       "Arial": 'Arial, "Microsoft YaHei", "微软雅黑", sans-serif',
-      "Microsoft YaHei": '"Microsoft YaHei", "微软雅黑", Arial, sans-serif',
-      "SimSun": '"SimSun", "宋体", serif',
-      "SimHei": '"SimHei", "黑体", sans-serif',
-      "KaiTi": '"KaiTi", "楷体", serif',
-      "Times New Roman": '"Times New Roman", serif',
+      "Microsoft YaHei": '"Microsoft YaHei", "微软雅黑", "PingFang SC", Arial, sans-serif',
+      "SimSun": '"SimSun", "宋体", "Noto Serif SC", serif',
+      "SimHei": '"SimHei", "黑体", "PingFang SC", sans-serif',
+      "KaiTi": '"KaiTi", "楷体", "STKaiti", serif',
+      "Times New Roman": '"Times New Roman", "SimSun", serif',
       "Helvetica": 'Helvetica, Arial, sans-serif',
       "Georgia": 'Georgia, "Times New Roman", serif',
+      "Consolas": '"Consolas", "Courier New", monospace',
     };
     return map[fontName] || fontName;
   }
@@ -117,10 +215,19 @@
     }, 300);
   }
 
+  function onManualAdjust() {
+    currentPreset = null;
+    var cards = presetList.querySelectorAll(".preset-card");
+    cards.forEach(function (card) {
+      card.classList.remove("active");
+    });
+  }
+
   h1SizeEl.addEventListener("input", function () {
     var val = parseInt(this.value);
     h1SizeVal.textContent = val;
     state.template.styles.heading_1.font_size = val;
+    onManualAdjust();
     debouncedApplyStyles();
   });
 
@@ -128,6 +235,7 @@
     var val = parseInt(this.value);
     h2SizeVal.textContent = val;
     state.template.styles.heading_2.font_size = val;
+    onManualAdjust();
     debouncedApplyStyles();
   });
 
@@ -135,21 +243,25 @@
     var val = parseInt(this.value);
     h3SizeVal.textContent = val;
     state.template.styles.heading_3.font_size = val;
+    onManualAdjust();
     debouncedApplyStyles();
   });
 
   h1FontEl.addEventListener("change", function () {
     state.template.styles.heading_1.font_name = this.value;
+    onManualAdjust();
     debouncedApplyStyles();
   });
 
   h2FontEl.addEventListener("change", function () {
     state.template.styles.heading_2.font_name = this.value;
+    onManualAdjust();
     debouncedApplyStyles();
   });
 
   h3FontEl.addEventListener("change", function () {
     state.template.styles.heading_3.font_name = this.value;
+    onManualAdjust();
     debouncedApplyStyles();
   });
 
@@ -256,43 +368,32 @@
   });
 
   function buildFullTemplate() {
+    var preset = PRESETS[currentPreset] || PRESETS["default"];
+    var h1 = state.template.styles.heading_1;
+    var h2 = state.template.styles.heading_2;
+    var h3 = state.template.styles.heading_3;
+
     return {
       document: {
-        default_font: "Times New Roman",
-        default_size: 12,
+        default_font: preset.paragraph_font,
+        default_size: preset.paragraph_size,
         page_margins: { top: 2.54, bottom: 2.54, left: 3.18, right: 3.18 },
       },
       styles: {
-        heading_1: {
-          font_name: state.template.styles.heading_1.font_name,
-          font_size: state.template.styles.heading_1.font_size,
-          bold: true,
-          alignment: "center",
-          color: "#1a1a1a",
-        },
-        heading_2: {
-          font_name: state.template.styles.heading_2.font_name,
-          font_size: state.template.styles.heading_2.font_size,
-          bold: true,
-          color: "#2d2d2d",
-        },
-        heading_3: {
-          font_name: state.template.styles.heading_3.font_name,
-          font_size: state.template.styles.heading_3.font_size,
-          bold: true,
-          color: "#3d3d3d",
-        },
-        heading_4: { font_name: "Arial", font_size: 12, bold: true },
-        heading_5: { font_name: "Arial", font_size: 11, bold: true },
-        heading_6: { font_name: "Arial", font_size: 10, bold: true },
-        paragraph: { font_name: "Times New Roman", font_size: 12 },
+        heading_1: { font_name: h1.font_name, font_size: h1.font_size, bold: true, alignment: "center", color: "#1a1a1a" },
+        heading_2: { font_name: h2.font_name, font_size: h2.font_size, bold: true, color: "#2d2d2d" },
+        heading_3: { font_name: h3.font_name, font_size: h3.font_size, bold: true, color: "#3d3d3d" },
+        heading_4: { font_name: preset.heading_4_6_font, font_size: 12, bold: true },
+        heading_5: { font_name: preset.heading_4_6_font, font_size: 11, bold: true },
+        heading_6: { font_name: preset.heading_4_6_font, font_size: 10, bold: true },
+        paragraph: { font_name: preset.paragraph_font, font_size: preset.paragraph_size },
         bold: { bold: true },
         italic: { italic: true },
-        inline_code: { font_name: "Courier New", font_size: 10.5, bg_color: "#F0F0F0" },
-        code_block: { font_name: "Courier New", font_size: 10, bg_color: "#F0F0F0", border_color: "#CCCCCC", border_width_pt: 1 },
+        inline_code: { font_name: preset.code_font, font_size: 10.5, bg_color: "#F0F0F0" },
+        code_block: { font_name: preset.code_font, font_size: 10, bg_color: "#F0F0F0", border_color: "#CCCCCC", border_width_pt: 1 },
         link: { color: "#0000EE", underline: true },
-        table_header: { font_name: "Arial", font_size: 10, bold: true },
-        table_cell: { font_name: "Arial", font_size: 10 },
+        table_header: { font_name: preset.heading_4_6_font, font_size: 10, bold: true },
+        table_cell: { font_name: preset.paragraph_font, font_size: 10 },
         list_bullet: { indent_cm: 1.27 },
         list_number: { indent_cm: 1.27 },
         image: { alignment: "center" },
@@ -312,5 +413,6 @@
 
   exports.handleFile = handleFile;
   exports.state = state;
+  exports.applyPreset = applyPreset;
   window.app = exports;
 })();
