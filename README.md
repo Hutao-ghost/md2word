@@ -2,6 +2,10 @@
 
 将 Markdown 文件转换为排版精美的 Word (.docx) 文档。拖拽、预览、微调、导出——三步完成。
 
+## 预览
+<img width="1470" height="747" alt="image" src="https://github.com/user-attachments/assets/ba157b95-c69a-4567-9708-e007d6b3b37f" />
+
+
 ## 功能
 
 - **所见即所得预览**：左侧实时渲染 Markdown 效果，所见即导出后的样子
